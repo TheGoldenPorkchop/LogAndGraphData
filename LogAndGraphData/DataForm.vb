@@ -11,7 +11,7 @@ Public Class DataForm
 
     'Program Logic-----------------------------------------------------------------------------------------------------------------------
 
-    Function GetRandonNumberAround(thisnumber%, Optional within% = 10) As Integer
+    Function GetRandomNumberAround(thisnumber%, Optional within% = 10) As Integer
         Dim result As Integer
 
         result = GetRandomNumber(2 * within) + (thisnumber - within)
@@ -33,13 +33,19 @@ Public Class DataForm
         Dim pen As New Pen(Color.Wheat)
         Dim scaleX As Single = CSng(GraphPictureBox.Width / 100)
         Dim scaleY As Single = CSng((GraphPictureBox.Height / 100) * -1)
+        Dim oldY% = GetRandomNumberAround(50, 50)
+        Dim newY% = 50
+
+        g.TranslateTransform(0, GraphPictureBox.Height) 'moves the origin to bottom
+        g.ScaleTransform(scaleX, scaleY) 'scale to 100 x 100
+        pen.Width = 0.25 'pen size
 
 
-        g.TranslateTransform(0, GraphPictureBox.Height)
-        g.ScaleTransform(scaleX, scaleY)
-
-        pen.Width = 0.25
-        g.DrawLine(pen, 5, 50, 95, 50)
+        For x = 0 To 100
+            newY = GetRandomNumberAround(oldY, 5)
+            g.DrawLine(pen, x - 1, oldY, x, newY)
+            oldY = newY
+        Next
 
         g.Dispose()
         pen.Dispose()
@@ -53,9 +59,9 @@ Public Class DataForm
     End Sub
 
     Private Sub GraphButton_Click(sender As Object, e As EventArgs) Handles GraphButton.Click
-        'GraphData()
+        GraphData()
         For i = 1 To 100
-            Console.WriteLine(GetRandonNumberAround(50, 10))
+            Console.WriteLine(GetRandomNumberAround(50, 10))
         Next
     End Sub
 End Class

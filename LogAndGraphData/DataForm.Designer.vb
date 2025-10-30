@@ -62,7 +62,7 @@ Partial Class DataForm
         Me.GraphButton.Name = "GraphButton"
         Me.GraphButton.Size = New System.Drawing.Size(86, 56)
         Me.GraphButton.TabIndex = 2
-        Me.GraphButton.Text = "Graph"
+        Me.GraphButton.Text = "&Graph"
         Me.GraphButton.UseVisualStyleBackColor = True
         '
         'ExitButton
@@ -93,14 +93,14 @@ Partial Class DataForm
         Me.TopMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileTopStripMenuItem})
         Me.TopMenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.TopMenuStrip.Name = "TopMenuStrip"
-        Me.TopMenuStrip.Size = New System.Drawing.Size(800, 28)
+        Me.TopMenuStrip.Size = New System.Drawing.Size(800, 30)
         Me.TopMenuStrip.TabIndex = 5
         Me.TopMenuStrip.Text = "MenuStrip1"
         '
         'FileTopStripMenuItem
         '
         Me.FileTopStripMenuItem.Name = "FileTopStripMenuItem"
-        Me.FileTopStripMenuItem.Size = New System.Drawing.Size(46, 24)
+        Me.FileTopStripMenuItem.Size = New System.Drawing.Size(46, 26)
         Me.FileTopStripMenuItem.Text = "&File"
         '
         'StatusStrip
