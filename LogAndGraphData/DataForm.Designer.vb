@@ -22,6 +22,7 @@ Partial Class DataForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.GraphPictureBox = New System.Windows.Forms.PictureBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.GraphButton = New System.Windows.Forms.Button()
@@ -30,6 +31,7 @@ Partial Class DataForm
         Me.TopMenuStrip = New System.Windows.Forms.MenuStrip()
         Me.FileTopStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
+        Me.SampleTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.GraphPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ButtonGroupBox.SuspendLayout()
         Me.TopMenuStrip.SuspendLayout()
@@ -93,14 +95,14 @@ Partial Class DataForm
         Me.TopMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileTopStripMenuItem})
         Me.TopMenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.TopMenuStrip.Name = "TopMenuStrip"
-        Me.TopMenuStrip.Size = New System.Drawing.Size(800, 30)
+        Me.TopMenuStrip.Size = New System.Drawing.Size(800, 28)
         Me.TopMenuStrip.TabIndex = 5
         Me.TopMenuStrip.Text = "MenuStrip1"
         '
         'FileTopStripMenuItem
         '
         Me.FileTopStripMenuItem.Name = "FileTopStripMenuItem"
-        Me.FileTopStripMenuItem.Size = New System.Drawing.Size(46, 26)
+        Me.FileTopStripMenuItem.Size = New System.Drawing.Size(46, 24)
         Me.FileTopStripMenuItem.Text = "&File"
         '
         'StatusStrip
@@ -141,4 +143,5 @@ Partial Class DataForm
     Friend WithEvents TopMenuStrip As MenuStrip
     Friend WithEvents FileTopStripMenuItem As ToolStripMenuItem
     Friend WithEvents StatusStrip As StatusStrip
+    Friend WithEvents SampleTimer As Timer
 End Class

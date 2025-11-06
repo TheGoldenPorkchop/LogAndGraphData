@@ -8,8 +8,9 @@ Option Explicit On
 
 
 Public Class DataForm
-
+    Dim DataBuffer As New Queue(Of Integer)
     'Program Logic-----------------------------------------------------------------------------------------------------------------------
+
 
     Function GetRandomNumberAround(thisnumber%, Optional within% = 10) As Integer
         Dim result As Integer
@@ -24,31 +25,64 @@ Public Class DataForm
         Return CInt(System.Math.Floor((Rnd() * (max + 1))))
     End Function
 
-    Function GetData() As Integer
-        Return 5
-    End Function
+    Sub LogData(currentSample As Integer)
+        Dim filePath As String = $"..\..\data_{DateTime.Now.ToString("yyMMddhh")}.log"
+        Dim exactTime As String = DateTime.Now.ToString '("yyMMddhh") 'MODIFY FOR 
+        FileOpen(1, filePath, OpenMode.Append)
+        Write(1, DateTime.Now)
+        Write(1, DateTime.Now.Millisecond)
+        WriteLine(1, currentSample)
+        FileClose(1)
+    End Sub
+
+    Sub GetData()
+        'Me.DataBuffer.Last
+        Dim _last%
+        Dim sample%
+
+        If Me.DataBuffer.Count > 0 Then
+            _last = Me.DataBuffer.Last
+        Else
+            _last = GetRandomNumberAround(50, 50)
+        End If
+
+        If DataBuffer.Count >= 100 Then
+            Me.DataBuffer.Dequeue()
+        End If
+
+
+        sample = GetRandomNumberAround(_last, 5)
+        Me.DataBuffer.Enqueue(sample)
+        LogData(sample)
+
+    End Sub
 
     Sub GraphData()
         Dim g As Graphics = GraphPictureBox.CreateGraphics
-        Dim pen As New Pen(Color.Wheat)
-        Dim scaleX As Single = CSng(GraphPictureBox.Width / 100)
-        Dim scaleY As Single = CSng((GraphPictureBox.Height / 100) * -1)
-        Dim oldY% = GetRandomNumberAround(50, 50)
-        Dim newY% = 50
+        Dim pen As New Pen(Color.Lime)
+        Dim eraser As New Pen(Color.Black)
+        Dim scaleX! = CSng(GraphPictureBox.Width \ 100)
+        Dim scaleY! = CSng((GraphPictureBox.Height \ 100) * -1)
 
-        g.TranslateTransform(0, GraphPictureBox.Height) 'moves the origin to bottom
-        g.ScaleTransform(scaleX, scaleY) 'scale to 100 x 100
-        pen.Width = 0.25 'pen size
+        g.Clear(Color.Black)
+        g.TranslateTransform(0, GraphPictureBox.Height) 'Moves origin to bottom left
+        g.ScaleTransform(scaleX, scaleY) 'scale to 100 x 100 units
+        pen.Width = 0.5
 
-
-        For x = 0 To 100
-            newY = GetRandomNumberAround(oldY, 5)
-            g.DrawLine(pen, x - 1, oldY, x, newY)
-            oldY = newY
+        Dim oldY% = 0 'eGetRandomNumberAround(50, 50)
+        Dim x = -1
+        For Each y In Me.DataBuffer.Reverse
+            x += 1
+            g.DrawLine(eraser, x, 0, x, 100)
+            g.DrawLine(pen, x - 1, oldY, x, y)
+            oldY = y
         Next
+
 
         g.Dispose()
         pen.Dispose()
+
+
     End Sub
 
     'Event Handlers----------------------------------------------------------------------------------------------------------------------
@@ -59,9 +93,20 @@ Public Class DataForm
     End Sub
 
     Private Sub GraphButton_Click(sender As Object, e As EventArgs) Handles GraphButton.Click
+        If SampleTimer.Enabled Then
+            SampleTimer.Stop()
+            SampleTimer.Enabled = False
+        Else
+            SampleTimer.Enabled = True
+            SampleTimer.Start()
+        End If
+        'GraphData()
+        'GetData()
+
+    End Sub
+
+    Private Sub SampleTimer_Tick(sender As Object, e As EventArgs) Handles SampleTimer.Tick
         GraphData()
-        For i = 1 To 100
-            Console.WriteLine(GetRandomNumberAround(50, 10))
-        Next
+        GetData()
     End Sub
 End Class
