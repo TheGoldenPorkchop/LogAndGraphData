@@ -35,6 +35,37 @@ Public Class DataForm
         FileClose(1)
     End Sub
 
+    Sub LoadData()
+        Dim choice As DialogResult
+        Dim fileNumber As Integer = FreeFile()
+        Dim currentRecord As String
+        Dim temp() As String
+
+        OpenFileDialog1.Filter = "log file (*.log)|*.log"
+        choice = OpenFileDialog1.ShowDialog()
+        If choice = DialogResult.OK Then
+            MsgBox(OpenFileDialog1.FileName)
+
+            Try
+                FileOpen(fileNumber, OpenFileDialog1.FileName, OpenMode.Input)
+                Me.DataBuffer.Clear()
+
+                Do Until EOF(fileNumber)
+                    currentRecord = LineInput(fileNumber)
+                    temp = Split(currentRecord, ",")
+                    Me.DataBuffer.Enqueue(CInt(temp(temp.GetUpperBound(0))))
+                Loop
+                FileClose(fileNumber)
+            Catch ex As Exception
+                MsgBox(ex.Message)
+            End Try
+
+        Else
+            MsgBox("Erm...")
+        End If
+
+    End Sub
+
     Sub GetData()
         'Me.DataBuffer.Last
         Dim _last%
@@ -61,15 +92,22 @@ Public Class DataForm
         Dim g As Graphics = GraphPictureBox.CreateGraphics
         Dim pen As New Pen(Color.Lime)
         Dim eraser As New Pen(Color.Black)
-        Dim scaleX! = CSng(GraphPictureBox.Width \ 100)
-        Dim scaleY! = CSng((GraphPictureBox.Height \ 100) * -1)
+        'Dim scaleX! = CSng(GraphPictureBox.Width / 100)
+        Dim scaleX! = CSng(GraphPictureBox.Width / Me.DataBuffer.Count)
+        Dim scaleY! = CSng((GraphPictureBox.Height / 100) * -1)
 
-        g.Clear(Color.Black)
-        g.TranslateTransform(0, GraphPictureBox.Height) 'Moves origin to bottom left
-        g.ScaleTransform(scaleX, scaleY) 'scale to 100 x 100 units
-        pen.Width = 0.5
+        'g.Clear(Color.Black)
+        Try
+            g.TranslateTransform(0, GraphPictureBox.Height) 'move origin to bottom left
+            g.ScaleTransform(scaleX, scaleY) 'scale to 100 x 100 units
+            pen.Width = 0.25 'fix pen so it is not too thick
+        Catch ex As Exception
+            MsgBox("You need a file to read first, dum dum")
+            SampleTimer.Enabled = False
+        End Try
 
-        Dim oldY% = 0 'eGetRandomNumberAround(50, 50)
+
+        Dim oldY% = 0 ' GetRandomNumberAround(50, 50)
         Dim x = -1
         For Each y In Me.DataBuffer.Reverse
             x += 1
@@ -78,10 +116,9 @@ Public Class DataForm
             oldY = y
         Next
 
-
         g.Dispose()
         pen.Dispose()
-
+        eraser.Dispose()
 
     End Sub
 
@@ -108,5 +145,9 @@ Public Class DataForm
     Private Sub SampleTimer_Tick(sender As Object, e As EventArgs) Handles SampleTimer.Tick
         GraphData()
         GetData()
+    End Sub
+
+    Private Sub OpenTopMenuItem_Click(sender As Object, e As EventArgs) Handles OpenTopMenuItem.Click
+        LoadData()
     End Sub
 End Class

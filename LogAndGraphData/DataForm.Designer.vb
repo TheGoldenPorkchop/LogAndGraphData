@@ -30,8 +30,10 @@ Partial Class DataForm
         Me.ButtonGroupBox = New System.Windows.Forms.GroupBox()
         Me.TopMenuStrip = New System.Windows.Forms.MenuStrip()
         Me.FileTopStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenTopMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.SampleTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         CType(Me.GraphPictureBox, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.ButtonGroupBox.SuspendLayout()
         Me.TopMenuStrip.SuspendLayout()
@@ -101,9 +103,16 @@ Partial Class DataForm
         '
         'FileTopStripMenuItem
         '
+        Me.FileTopStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenTopMenuItem})
         Me.FileTopStripMenuItem.Name = "FileTopStripMenuItem"
         Me.FileTopStripMenuItem.Size = New System.Drawing.Size(46, 24)
         Me.FileTopStripMenuItem.Text = "&File"
+        '
+        'OpenTopMenuItem
+        '
+        Me.OpenTopMenuItem.Name = "OpenTopMenuItem"
+        Me.OpenTopMenuItem.Size = New System.Drawing.Size(128, 26)
+        Me.OpenTopMenuItem.Text = "&Open"
         '
         'StatusStrip
         '
@@ -113,6 +122,13 @@ Partial Class DataForm
         Me.StatusStrip.Size = New System.Drawing.Size(800, 22)
         Me.StatusStrip.TabIndex = 6
         Me.StatusStrip.Text = "StatusStrip1"
+        '
+        'SampleTimer
+        '
+        '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
         'DataForm
         '
@@ -144,4 +160,6 @@ Partial Class DataForm
     Friend WithEvents FileTopStripMenuItem As ToolStripMenuItem
     Friend WithEvents StatusStrip As StatusStrip
     Friend WithEvents SampleTimer As Timer
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents OpenTopMenuItem As ToolStripMenuItem
 End Class
